@@ -2,6 +2,36 @@ const UserModel = require("../model/UserModal");
 
 const bcrypt = require("bcrypt");
 
+async function register1(req, res) {
+  try {
+    const { username, email, password, profile } = req.body;
+
+    const existUsername = await UserModel.findOne({ username });
+    if (existUsername) {
+      res.status(400).json({ error: "Please use a unique username" });
+    }
+
+    const existEmail = await UserModel.findOne({ email });
+    if (existEmail) {
+      res.status(400).json({ error: "Please use a unique email" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new UserModel({
+      username,
+      email,
+      password: hashedPassword,
+      profile: profile || "",
+    });
+
+    const result = await user.save();
+    res.status(201).json({ message: "User Regsitered" });
+  } catch (error) {
+    res.send(500).json({ error });
+  }
+}
+
 async function register(req, res) {
   try {
     const { username, email, password, profile } = req.body;
@@ -38,7 +68,6 @@ async function register(req, res) {
     return res.status(500).json({ error: "Internal server error." });
   }
 }
-
 
 // async function register(req, res) {
 //   try {
@@ -126,6 +155,7 @@ async function resetPassword(req, res) {
 
 module.exports = {
   register,
+  register1,
   login,
   getUser,
   updateUser,

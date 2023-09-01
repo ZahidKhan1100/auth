@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Post Methods
 
-router.route("/register").post(controller.register);
+router.route("/register").post(controller.register1);
 // router.route("/registerMail").post();
 router.route("/authenticate").post((req,res)=> res.end());
 router.route("/login").post(controller.login);
