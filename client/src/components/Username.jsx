@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import avatar from "../assets/profile.png";
 import style from "../css/Username.module.css";
@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { usernameValidate } from "../helper/Validate";
 
 const Username = () => {
+  const [username, setUsername] = useState('');
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -15,7 +16,7 @@ const Username = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      console.log(values);
+      setUsername(values.username)
     },
   });
   return (
@@ -46,7 +47,7 @@ const Username = () => {
             </div>
             <div className="text-center py-4">
               <span>
-                Not a Member{" "}
+                Not a Member? {" "}
                 <Link to="/register" className="text-red-500">
                   Register
                 </Link>
